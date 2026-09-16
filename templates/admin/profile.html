@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Profile - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Administrator Profile</h1>
+
+    <div class="form-container">
+
+        <div class="form-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                value="{{ session.get('username') }}"
+                readonly>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Role</label>
+
+            <input
+                type="text"
+                value="Administrator"
+                readonly>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

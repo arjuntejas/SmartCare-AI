@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register Patient - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Register New Patient</h1>
+
+    <br>
+
+    <div class="form-container">
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label>Patient Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter patient name"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Age</label>
+
+                <input
+                    type="number"
+                    name="age"
+                    min="0"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Gender</label>
+
+                <select name="gender" required>
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option value="Male">
+                        Male
+                    </option>
+
+                    <option value="Female">
+                        Female
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Phone</label>
+
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Enter phone number"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Address</label>
+
+                <textarea
+                    name="address"
+                    placeholder="Enter address"></textarea>
+
+            </div>
+
+
+            <button type="submit" class="btn">
+                Register Patient
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

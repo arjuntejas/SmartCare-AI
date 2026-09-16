@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Predictions - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>AI Predictions</h1>
+
+    <p>Predicted hospital requirements for tomorrow.</p>
+
+    <br>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>OP Patients</h3>
+            <h2>{{ predictions.op_patients }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Admissions</h3>
+            <h2>{{ predictions.admissions }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Beds Required</h3>
+            <h2>{{ predictions.beds }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Doctors Required</h3>
+            <h2>{{ predictions.doctors }}</h2>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <h2>Other Predictions</h2>
+
+        <p>
+            Expected Waiting Time:
+            <strong>{{ predictions.waiting }} minutes</strong>
+        </p>
+
+        <br>
+
+        <p>
+            Expected ICU Occupancy:
+            <strong>{{ predictions.icu }}%</strong>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

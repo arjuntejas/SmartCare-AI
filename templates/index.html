@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}
+SmartCare AI - Home
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="dashboard-header">
+
+        <div>
+            <h1>SmartCare AI</h1>
+
+            <p>
+                Intelligent Hospital Resource Planning
+                and Decision Support System
+            </p>
+        </div>
+
+        <a href="{{ url_for('login') }}" class="btn">
+            Login
+        </a>
+
+    </div>
+
+
+    <div class="card-container">
+
+        <div class="card">
+            <h3>Patient Management</h3>
+            <p>
+                Register patients, manage appointments,
+                admissions and patient records.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>AI Predictions</h3>
+            <p>
+                Predict future patient demand,
+                admissions and hospital resources.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Resource Planning</h3>
+            <p>
+                Plan doctors, beds and hospital resources
+                based on predicted demand.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Analytics</h3>
+            <p>
+                Analyze patient trends, bed occupancy,
+                workload and hospital performance.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <h2>How SmartCare AI Works</h2>
+
+        <p>
+            SmartCare AI uses historical hospital data
+            and machine learning to predict future demand.
+        </p>
+
+        <br>
+
+        <p>
+            The system helps hospital administrators
+            prepare doctors, beds and other resources
+            before demand increases.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

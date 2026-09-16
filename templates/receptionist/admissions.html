@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admissions - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Patient Admissions</h1>
+
+    <br>
+
+    <div class="form-container">
+
+        <h2>Admit Patient</h2>
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label>Patient</label>
+
+                <select name="patient_id" required>
+
+                    <option value="">
+                        Select Patient
+                    </option>
+
+                    {% for patient in patients %}
+
+                    <option value="{{ patient.id }}">
+                        {{ patient.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Bed</label>
+
+                <select name="bed_id" required>
+
+                    <option value="">
+                        Select Available Bed
+                    </option>
+
+                    {% for bed in beds %}
+
+                    <option value="{{ bed.id }}">
+                        {{ bed.bed_number }} - {{ bed.bed_type }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Admission Reason</label>
+
+                <textarea
+                    name="reason"
+                    placeholder="Enter admission reason"
+                    required></textarea>
+
+            </div>
+
+
+            <button type="submit" class="btn">
+                Admit Patient
+            </button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+
+    <div class="table-container">
+
+        <h2>Current Admissions</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Patient</th>
+                    <th>Bed</th>
+                    <th>Admission Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for admission in admissions %}
+
+                <tr>
+                    <td>{{ admission.patient_name }}</td>
+                    <td>{{ admission.bed_number }}</td>
+                    <td>{{ admission.admission_date }}</td>
+                    <td>{{ admission.status }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

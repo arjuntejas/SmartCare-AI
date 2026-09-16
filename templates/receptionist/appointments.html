@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}
+Appointments - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Appointments</h1>
+
+    <br>
+
+    <div class="form-container">
+
+        <h2>Book Appointment</h2>
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label>Patient</label>
+
+                <select name="patient_id" required>
+
+                    <option value="">
+                        Select Patient
+                    </option>
+
+                    {% for patient in patients %}
+
+                    <option value="{{ patient.id }}">
+                        {{ patient.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Doctor</label>
+
+                <select name="doctor_id" required>
+
+                    <option value="">
+                        Select Doctor
+                    </option>
+
+                    {% for doctor in doctors %}
+
+                    <option value="{{ doctor.id }}">
+                        {{ doctor.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Appointment Date</label>
+
+                <input
+                    type="date"
+                    name="appointment_date"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Appointment Time</label>
+
+                <input
+                    type="time"
+                    name="appointment_time"
+                    required>
+
+            </div>
+
+
+            <button type="submit" class="btn">
+                Book Appointment
+            </button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+
+    <div class="table-container">
+
+        <h2>Appointment List</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for appointment in appointments %}
+
+                <tr>
+                    <td>{{ appointment.patient_name }}</td>
+                    <td>{{ appointment.doctor_name }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <td>{{ appointment.status }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

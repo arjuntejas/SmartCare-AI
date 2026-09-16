@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="dashboard-header">
+
+        <div>
+            <h1>Administrator Dashboard</h1>
+            <p>Hospital overview and AI-based planning</p>
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>Total Patients</h3>
+            <h2>{{ stats.patients }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Doctors</h3>
+            <h2>{{ stats.doctors }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Beds</h3>
+            <h2>{{ stats.beds }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Occupied Beds</h3>
+            <h2>{{ stats.occupied_beds }}</h2>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <h2>Tomorrow's AI Predictions</h2>
+
+            <div class="prediction-card">
+                <h3>OP Patients</h3>
+                <h2>{{ predictions.op_patients }}</h2>
+            </div>
+
+            <div class="prediction-card">
+                <h3>Admissions</h3>
+                <h2>{{ predictions.admissions }}</h2>
+            </div>
+
+            <div class="prediction-card">
+                <h3>Beds Required</h3>
+                <h2>{{ predictions.beds }}</h2>
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h2>Hospital Status</h2>
+
+            <div class="resource-bar">
+
+                <label>
+                    ICU Occupancy:
+                    {{ predictions.icu }}%
+                </label>
+
+                <div class="progress">
+
+                    <div class="progress-value"
+                         style="width: {{ predictions.icu }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="resource-bar">
+
+                <label>
+                    Waiting Time:
+                    {{ predictions.waiting }} minutes
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resources - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Hospital Resources</h1>
+
+    <br>
+
+    <div class="table-container">
+
+        <h2>Doctors</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Specialization</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for doctor in doctors %}
+
+                <tr>
+                    <td>{{ doctor.id }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.specialization }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <br>
+
+    <div class="table-container">
+
+        <h2>Beds</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Bed Number</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for bed in beds %}
+
+                <tr>
+                    <td>{{ bed.bed_number }}</td>
+                    <td>{{ bed.bed_type }}</td>
+                    <td>{{ bed.status }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

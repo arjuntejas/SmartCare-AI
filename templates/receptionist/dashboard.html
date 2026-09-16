@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Receptionist Dashboard - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Receptionist Dashboard</h1>
+
+    <p>
+        Welcome, {{ session.get('username') }}
+    </p>
+
+    <br>
+
+    <div class="card-container">
+
+        <div class="card">
+            <h3>Total Patients</h3>
+            <div class="number">
+                {{ patients|length }}
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Appointments</h3>
+            <div class="number">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Admissions</h3>
+            <div class="number">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Available Beds</h3>
+            <div class="number">{{ beds|length }}</div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

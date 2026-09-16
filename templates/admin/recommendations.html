@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Recommendations - SmartCare AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>AI Recommendations</h1>
+
+    <p>Recommended actions based on predicted hospital demand.</p>
+
+    <br>
+
+    {% for recommendation in recommendations %}
+
+        <div class="recommendation">
+
+            <h3>
+                {{ recommendation.priority }}
+            </h3>
+
+            <p>
+                {{ recommendation.message }}
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
