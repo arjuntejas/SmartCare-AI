@@ -1,0 +1,168 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | SmartCare AI{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div>
+                <h2>SmartCare AI</h2>
+                <p>Hospital Intelligence</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-heading">MAIN MENU</p>
+
+            <a class="nav-link active" href="{{ url_for('dashboard') }}">
+                <span class="nav-icon">▦</span>
+                Overview
+            </a>
+
+            <a class="nav-link" href="{{ url_for('resources') }}">
+                <span class="nav-icon">▤</span>
+                Resources
+            </a>
+
+            <a class="nav-link" href="{{ url_for('prediction') }}">
+                <span class="nav-icon">🤖</span>
+                AI Predictions
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ current_user.name[0]|upper }}
+                </div>
+                <div>
+                    <strong>{{ current_user.name }}</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+
+            <a class="nav-link" href="{{ url_for('logout') }}">
+    Logout
+</a>
+        </div>
+    </aside>
+
+    <!-- Main Dashboard -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>Hospital Dashboard</h1>
+                <p>Monitor hospital operations and resource utilization.</p>
+            </div>
+
+            <a class="primary-btn" href="{{ url_for('resources') }}">
+                + Add Daily Data
+            </a>
+        </header>
+
+        <!-- Statistics Cards -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Patients</div>
+                <div class="stat-value">
+                    {{ latest.patients if latest else 0 }}
+                </div>
+                <div class="stat-description">Latest daily record</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Total Beds</div>
+                <div class="stat-value">
+                    {{ latest.total_beds if latest else 0 }}
+                </div>
+                <div class="stat-description">Hospital bed capacity</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Occupied Beds</div>
+                <div class="stat-value">
+                    {{ latest.occupied_beds if latest else 0 }}
+                </div>
+                <div class="stat-description">Currently recorded</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Bed Occupancy</div>
+                <div class="stat-value">
+                    {% if latest and latest.total_beds > 0 %}
+                        {{ "%.1f"|format(
+                            latest.occupied_beds / latest.total_beds * 100
+                        ) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </div>
+                <div class="stat-description">Based on latest record</div>
+            </div>
+
+        </section>
+
+        <!-- Charts -->
+        <section class="charts-grid">
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h2>Patient Demand Trend</h2>
+                        <p>Daily patient records over time</p>
+                    </div>
+                </div>
+
+                <div class="chart-wrap">
+                    <canvas id="patientChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h2>Bed Utilization</h2>
+                        <p>Occupied beds compared with available beds</p>
+                    </div>
+                </div>
+
+                <div class="chart-wrap">
+                    <canvas id="bedChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- AI Prediction Shortcut -->
+        <section class="chart-card prediction-shortcut">
+            <div>
+                <h2>AI Patient Demand Forecast</h2>
+                <p>
+                    View the experimental Random Forest forecast for the
+                    next 7 days using saved hospital records.
+                </p>
+            </div>
+
+            <a class="primary-btn" href="{{ url_for('prediction') }}">
+                View AI Predictions →
+            </a>
+        </section>
+
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

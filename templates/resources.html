@@ -1,0 +1,159 @@
+
+{% extends "base.html" %}
+
+{% block title %}Hospital Resources | SmartCare AI{% endblock %}
+
+{% block content %}
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <a class="sidebar-brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark brand-mark-small">S+</span>
+            <span>SmartCare <span class="brand-light">AI</span></span>
+        </a>
+
+        <p class="sidebar-label">WORKSPACE</p>
+
+        <a class="nav-link" href="{{ url_for('dashboard') }}">
+            <span class="nav-icon">▦</span>
+            Overview
+        </a>
+
+        <a class="nav-link" href="{{ url_for('dashboard') }}#analytics">
+            <span class="nav-icon">⌁</span>
+            Analytics
+        </a>
+
+        <a class="nav-link active" href="{{ url_for('resources') }}">
+            <span class="nav-icon">▤</span>
+            Resources
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="profile-card">
+                <div class="avatar">
+                    {{ current_user.name[0]|upper }}
+                </div>
+                <div class="profile-info">
+                    <strong>{{ current_user.name }}</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('logout') }}">
+                <input type="hidden" name="csrf_token"
+                       value="{{ csrf_token() }}">
+                <button class="logout-btn" type="submit">↪ Sign out</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">HOSPITAL OPERATIONS</p>
+                <h1>Daily hospital records</h1>
+                <p class="muted">
+                    Enter and manage daily hospital resource statistics.
+                </p>
+            </div>
+        </header>
+
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Add or update a daily record</h2>
+                    <p class="muted">
+                        Saving an existing date updates that day's record.
+                    </p>
+                </div>
+            </div>
+
+            <form method="POST" class="auth-form">
+
+                <input type="hidden" name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <label for="record_date">Record date</label>
+                <input id="record_date" name="record_date"
+                       type="date" value="{{ today }}" required>
+
+                <label for="patients">Patients</label>
+                <input id="patients" name="patients"
+                       type="number" min="0" value="90" required>
+
+                <label for="total_beds">Total beds</label>
+                <input id="total_beds" name="total_beds"
+                       type="number" min="0" value="150" required>
+
+                <label for="occupied_beds">Occupied beds</label>
+                <input id="occupied_beds" name="occupied_beds"
+                       type="number" min="0" value="100" required>
+
+                <label for="available_doctors">Available doctors</label>
+                <input id="available_doctors" name="available_doctors"
+                       type="number" min="0" value="20" required>
+
+                <button class="btn btn-primary btn-full" type="submit">
+                    Save hospital record
+                </button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent records</h2>
+                    <p class="muted">Up to 30 latest daily records</p>
+                </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;
+                              text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">Date</th>
+                            <th style="padding: 12px;">Patients</th>
+                            <th style="padding: 12px;">Total beds</th>
+                            <th style="padding: 12px;">Occupied</th>
+                            <th style="padding: 12px;">Available</th>
+                            <th style="padding: 12px;">Doctors</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr style="border-top: 1px solid #e6ebf2;">
+                            <td style="padding: 12px;">
+                                {{ record.record_date.strftime("%d %b %Y") }}
+                            </td>
+                            <td style="padding: 12px;">{{ record.patients }}</td>
+                            <td style="padding: 12px;">{{ record.total_beds }}</td>
+                            <td style="padding: 12px;">{{ record.occupied_beds }}</td>
+                            <td style="padding: 12px;">
+                                {{ record.total_beds - record.occupied_beds }}
+                            </td>
+                            <td style="padding: 12px;">
+                                {{ record.available_doctors }}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="padding: 16px;">
+                                No records available yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            SmartCare AI · Hospital Resource Planning
+        </footer>
+
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Login | SmartCare AI{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+
+    <section class="auth-brand">
+        <div class="brand-mark">S+</div>
+
+        <p class="eyebrow">SMARTCARE AI</p>
+
+        <h1>Smarter decisions.<br>Better healthcare.</h1>
+
+        <p class="brand-description">
+            Plan hospital resources, monitor patient demand,
+            and understand hospital operations from one dashboard.
+        </p>
+
+        <div class="brand-note">
+            Hospital Resource Planning System
+        </div>
+    </section>
+
+    <section class="auth-panel">
+        <div class="auth-form-wrap">
+
+            <p class="eyebrow">ADMINISTRATOR PORTAL</p>
+
+            <h2>Welcome back</h2>
+
+            <p class="muted">
+                Sign in to view your hospital dashboard.
+            </p>
+
+            <form method="POST" class="auth-form">
+
+                <input type="hidden" name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <label for="email">Email address</label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="admin@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit"
+                        class="btn btn-primary btn-full">
+                    Sign in to dashboard
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Don't have an account?
+                <a href="{{ url_for('register') }}">
+                    Create one
+                </a>
+            </p>
+
+            <p class="security-note">
+                Development version — use a test account only.
+            </p>
+
+        </div>
+    </section>
+
+</main>
+{% endblock %}

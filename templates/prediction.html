@@ -1,0 +1,545 @@
+
+{% extends "base.html" %}
+
+{% block title %}AI Predictions | SmartCare AI{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .app-layout {
+        display: flex;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+    }
+
+    .app-layout .sidebar {
+        flex: 0 0 260px;
+        min-width: 0;
+    }
+
+    .app-layout .main-content {
+        flex: 1 1 0%;
+        width: 0;
+        min-width: 0;
+        max-width: 100%;
+        padding: 24px;
+    }
+
+    .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        width: 100%;
+        min-width: 0;
+        margin-bottom: 24px;
+    }
+
+    .topbar > div {
+        min-width: 0;
+    }
+
+    .topbar h1 {
+        overflow-wrap: anywhere;
+    }
+
+    .topbar .primary-btn {
+        max-width: 100%;
+        white-space: normal;
+        flex-shrink: 0;
+    }
+
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
+    }
+
+    .metric-card {
+        min-width: 0;
+        max-width: 100%;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow-wrap: anywhere;
+    }
+
+    .metric-card h3 {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0 0 12px;
+    }
+
+    .metric-value {
+        color: #0f172a;
+        font-size: 28px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .metric-note {
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 8px;
+    }
+
+    .section-card {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        padding: 24px;
+        margin-bottom: 24px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+
+    .section-card h2 {
+        margin-top: 0;
+        color: #0f172a;
+    }
+
+    .chart-wrap {
+        position: relative;
+        width: 100%;
+        min-width: 0;
+        height: 340px;
+    }
+
+    .table-wrap {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .forecast-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+    }
+
+    .forecast-table th,
+    .forecast-table td {
+        padding: 13px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .forecast-table th {
+        background: #f8fafc;
+        color: #334155;
+    }
+
+    .comparison-note {
+        padding: 14px 16px;
+        margin: 16px 0 24px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #1e40af;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .recommendation {
+        border-left: 4px solid #64748b;
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .recommendation.warning {
+        border-left-color: #d97706;
+    }
+
+    .recommendation.success {
+        border-left-color: #059669;
+    }
+
+    .recommendation h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+    }
+
+    .recommendation p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+    .disclaimer {
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1100px) {
+        .metrics-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 760px) {
+        .app-layout {
+            display: block;
+        }
+
+        .app-layout .sidebar {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .app-layout .main-content {
+            width: 100%;
+            padding: 18px;
+        }
+
+        .metrics-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .topbar {
+            align-items: flex-start;
+        }
+
+        .chart-wrap {
+            height: 280px;
+        }
+
+        .section-card,
+        .metric-card {
+            padding: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div>
+                <h2>SmartCare AI</h2>
+                <p>Hospital Intelligence</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-heading">MAIN MENU</p>
+
+            <a class="nav-link"
+               href="{{ url_for('dashboard') }}">
+                ▦ Overview
+            </a>
+
+            <a class="nav-link"
+               href="{{ url_for('resources') }}">
+                ▤ Resources
+            </a>
+
+            <a class="nav-link active"
+               href="{{ url_for('prediction') }}">
+                🤖 AI Predictions
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ current_user.name[0]|upper }}
+                </div>
+                <div>
+                    <strong>{{ current_user.name }}</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+
+            <a class="nav-link" href="{{ url_for('logout') }}">
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>AI Patient Demand Predictions</h1>
+                <p>Experimental seven-day patient demand forecast</p>
+            </div>
+
+            <a class="primary-btn"
+               href="{{ url_for('dashboard') }}">
+                Back to Dashboard
+            </a>
+        </header>
+
+        {% if result.success %}
+
+        <section class="section-card">
+            <h2>Model Evaluation</h2>
+            <p>
+                Performance measured on historical records held out
+                from model training.
+            </p>
+
+            <div class="metrics-grid">
+
+                <article class="metric-card">
+                    <h3>Random Forest MAE</h3>
+                    <div class="metric-value">
+                        {{ result.metrics.mae }}
+                    </div>
+                    <p class="metric-note">
+                        Average absolute error in patients. Lower is better.
+                    </p>
+                </article>
+
+                <article class="metric-card">
+                    <h3>Random Forest RMSE</h3>
+                    <div class="metric-value">
+                        {{ result.metrics.rmse }}
+                    </div>
+                    <p class="metric-note">
+                        Penalizes larger errors. Lower is better.
+                    </p>
+                </article>
+
+                <article class="metric-card">
+                    <h3>R² Score</h3>
+                    <div class="metric-value">
+                        {% if result.metrics.r2 is not none %}
+                            {{ result.metrics.r2 }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </div>
+                    <p class="metric-note">
+                        Negative scores indicate poor test performance.
+                    </p>
+                </article>
+
+                <article class="metric-card">
+                    <h3>Baseline MAE</h3>
+                    <div class="metric-value">
+                        {{ result.metrics.baseline_mae }}
+                    </div>
+                    <p class="metric-note">
+                        Error from a simple mean-prediction model.
+                    </p>
+                </article>
+
+                <article class="metric-card">
+                    <h3>Baseline RMSE</h3>
+                    <div class="metric-value">
+                        {{ result.metrics.baseline_rmse }}
+                    </div>
+                    <p class="metric-note">
+                        Reference error for the baseline model.
+                    </p>
+                </article>
+
+                <article class="metric-card">
+                    <h3>Test Records</h3>
+                    <div class="metric-value">
+                        {{ result.metrics.test_records }}
+                    </div>
+                    <p class="metric-note">
+                        Historical records used for evaluation.
+                    </p>
+                </article>
+
+            </div>
+
+            <div class="comparison-note">
+                <strong>Model comparison:</strong>
+                Compare Random Forest and baseline errors on the same
+                test records. Lower MAE and RMSE indicate smaller errors.
+                Keep the measured results; do not assume Random Forest
+                is better unless testing shows an improvement.
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Patient Demand Forecast</h2>
+            <p>
+                Blue represents historical patient counts.
+                The dashed green line represents predicted counts.
+            </p>
+
+            <div class="chart-wrap">
+                <canvas id="predictionChart"></canvas>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Seven-Day Forecast Details</h2>
+
+            <div class="table-wrap">
+                <table class="forecast-table">
+                    <thead>
+                        <tr>
+                            <th>Forecast Date</th>
+                            <th>Predicted Patients</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for forecast_date in result.forecast_dates %}
+                        <tr>
+                            <td>{{ forecast_date[:10] }}</td>
+                            <td>
+                                {{ result.forecast_patients[loop.index0] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        {% if resource_result is defined %}
+        <section class="section-card">
+            <h2>Hospital Resource Recommendations</h2>
+
+            {% if resource_result.success %}
+
+                {% for item in resource_result.recommendations %}
+                <article class="recommendation {{ item.level }}">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.message }}</p>
+                </article>
+                {% endfor %}
+
+            {% else %}
+                <p>
+                    {{ resource_result.message |
+                       default("Resource recommendations are unavailable.") }}
+                </p>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <p class="disclaimer">
+            Model: {{ result.model }}.
+            Evaluation uses a chronological holdout of
+            {{ result.metrics.test_records }} historical records.
+            The records are generated demonstration data, not real
+            hospital data. Results do not establish real-world
+            forecasting accuracy. This is an experimental decision
+            support demonstration, not clinically validated medical advice.
+        </p>
+
+        {% else %}
+
+        <section class="section-card">
+            <h2>Forecast Unavailable</h2>
+            <p>{{ result.message }}</p>
+
+            <a class="primary-btn"
+               href="{{ url_for('resources') }}">
+                Add Hospital Records
+            </a>
+        </section>
+
+        {% endif %}
+
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if result.success %}
+<script>
+    const historicalDates = {{ result.historical_dates | tojson }};
+    const historicalPatients = {{ result.historical_patients | tojson }};
+    const forecastDates = {{ result.forecast_dates | tojson }};
+    const forecastPatients = {{ result.forecast_patients | tojson }};
+
+    const labels = [...historicalDates, ...forecastDates]
+        .map(value => value.substring(0, 10));
+
+    const historicalData = [
+        ...historicalPatients,
+        ...Array(forecastDates.length).fill(null)
+    ];
+
+    const forecastData = [
+        ...Array(Math.max(historicalPatients.length - 1, 0)).fill(null),
+        historicalPatients[historicalPatients.length - 1],
+        ...forecastPatients
+    ];
+
+    const canvas = document.getElementById("predictionChart");
+
+    if (canvas && typeof Chart !== "undefined") {
+        new Chart(canvas, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Historical Patients",
+                        data: historicalData,
+                        borderColor: "#2563eb",
+                        backgroundColor: "rgba(37, 99, 235, 0.10)",
+                        fill: true,
+                        tension: 0.3,
+                        spanGaps: false
+                    },
+                    {
+                        label: "Predicted Patients",
+                        data: forecastData,
+                        borderColor: "#0d9488",
+                        backgroundColor: "rgba(13, 148, 136, 0.08)",
+                        borderDash: [6, 4],
+                        borderWidth: 3,
+                        tension: 0.3,
+                        spanGaps: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: "index"
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Number of Patients"
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxTicksLimit: 8,
+                            maxRotation: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

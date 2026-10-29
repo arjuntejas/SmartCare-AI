@@ -1,0 +1,106 @@
+
+{% extends "base.html" %}
+
+{% block title %}Create Account | SmartCare AI{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+
+    <section class="auth-brand">
+        <div class="brand-mark">S+</div>
+
+        <p class="eyebrow">SMARTCARE AI</p>
+
+        <h1>Better planning.<br>More informed care.</h1>
+
+        <p class="brand-description">
+            Create a development account to explore the hospital
+            resource planning dashboard.
+        </p>
+
+        <div class="brand-note">
+            Hospital Resource Planning System
+        </div>
+    </section>
+
+    <section class="auth-panel">
+        <div class="auth-form-wrap">
+
+            <p class="eyebrow">GET STARTED</p>
+
+            <h2>Create an account</h2>
+
+            <p class="muted">
+                Enter your details to continue.
+            </p>
+
+            <form method="POST" class="auth-form">
+
+                <input type="hidden" name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <label for="name">Full name</label>
+
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Your full name"
+                    autocomplete="name"
+                    required
+                >
+
+                <label for="email">Email address</label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="At least 10 characters"
+                    minlength="10"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label for="confirm_password">
+                    Confirm password
+                </label>
+
+                <input
+                    id="confirm_password"
+                    name="confirm_password"
+                    type="password"
+                    placeholder="Re-enter your password"
+                    minlength="10"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <button type="submit"
+                        class="btn btn-primary btn-full">
+                    Create account
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already registered?
+                <a href="{{ url_for('login') }}">Sign in</a>
+            </p>
+
+        </div>
+    </section>
+
+</main>
+{% endblock %}
